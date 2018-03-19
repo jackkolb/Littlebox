@@ -296,7 +296,7 @@ std::string Connection::verify_id(std::string fileID) {
 std::string Connection::get_file_name(int fileID) {
   std::vector<std::vector<std::string>> map_info = get_file_map();
   for (std::vector<std::string> entry : map_info) {
-    if (to_string(fileID) == entry[0]) {
+    if (std::to_string(fileID) == entry[0]) {
       return entry[1];
     }
   }
@@ -417,7 +417,7 @@ bool Connection::verify_message(std::string message) {
 	}
 
 	if (fileID != "-1") { // "push" does not require a file ID
-  	if (get_file_name(fileID) == ":(") { // reject if the file ID does not exist in the registries
+  	if (get_file_name(std::stoi(fileID)) == ":(") { // reject if the file ID does not exist in the registries
   	  log += "[REJECT] - bad file ID";
   	  return false;
   	}
