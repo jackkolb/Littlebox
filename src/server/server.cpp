@@ -1,5 +1,7 @@
 #include "server_header.h"
 
+// test test
+
 
 // overarching connection handler: calls the push/pull/delete functions
 void Connection::handle_connection(tcp::socket &_socket, std::string message) {
@@ -9,8 +11,8 @@ void Connection::handle_connection(tcp::socket &_socket, std::string message) {
 	std::string command; // "push", "pull", "delete"
 	message_stream >> command; // gets the command from the message stream
 
-	std::string message_results = process_message(message); // filter bad messages, returns ":(" if bad, ":)" if good
-	if (message_results == ":(") { // message is invalid
+	bool message_results = verify_message(message); // filter bad messages, returns ":(" if bad, ":)" if good
+	if (message_results == false) { // message is invalid
 	  std::strcpy(output_buffer, ":(");
 	  boost::asio::write(_socket, boost::asio::buffer(output_buffer, MAX_PACKET_LENGTH)); // write the output buffer to the socket
 	  return;
@@ -153,7 +155,7 @@ void Connection::pull_file(tcp::socket &_socket, int fileID) {
 void Connection::delete_file(tcp::socket &_socket, int fileID) {
   char output_buffer[MAX_PACKET_LENGTH]; // response for the success (or not) of the deletion
   if (fileID == 0) { // special case: no deleting the file_map!
-    log += "[REJECT: ATTEMPT DELETE FILE_MAP]";
+    log += " [REJECT: ATTEMPT DELETE FILE_MAP]";
     strcpy(output_buffer, ":("); // ":(" indicates bad!
     boost::asio::write(_socket, boost::asio::buffer(output_buffer, MAX_PACKET_LENGTH)); // writes output buffer to socket
     return;
@@ -162,13 +164,13 @@ void Connection::delete_file(tcp::socket &_socket, int fileID) {
   std::string filepath = "./server/" + filename; // creates the file path
 
   if (remove(filepath.c_str()) != 0) { // if failed to delete the file
-    log += "[ERROR: DELETE ID:" + std::to_string(fileID) + "]";
+    log += " [ERROR: DELETE ID:" + std::to_string(fileID) + "]";
     strcpy(output_buffer, ":("); // ":(" indicates bad!
     boost::asio::write(_socket, boost::asio::buffer(output_buffer, MAX_PACKET_LENGTH)); // writes output buffer to socket
     return;
   }
   else {
-    log += "[SUCCESS: DELETE ID:" + std::to_string(fileID) + "]";           
+    log += " [SUCCESS: DELETE ID:" + std::to_string(fileID) + "]";           
     strcpy(output_buffer, ":)"); // ":)" indicates good!
     boost::asio::write(_socket, boost::asio::buffer(output_buffer, MAX_PACKET_LENGTH)); // writes output buffer to socket
   }
