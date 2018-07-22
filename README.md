@@ -65,4 +65,18 @@ The server has three functions:
 - Push: copies a file from your computer to the server
 - Pull: copies a file from the server to your computer
 - Delete: removes a file from the server
+
 (Rename is considered for the future, currently it can be done by Pull + Delete + Push)
+
+
+## Usage
+
+To run the server:
+```
+./littlebox_server
+```
+
+To run a client instance:
+```
+./littlebox_client
+```
