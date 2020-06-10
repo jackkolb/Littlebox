@@ -54,7 +54,7 @@ void pull_file(tcp::socket& _socket, int fileID) {
   //
   // Example: file of 3700 bytes, packets of size 1000
   //   -->Packet 1 (1000)  -->Packet 2 (1000)  -->Packet 3 (1000)  -->Packet 4 (700)  done!
-  std::string file_path = "./client/" + get_file_name(std::to_string(fileID)); // gets the file name from the ID, turns into a path
+  std::string file_path = "./client/" + get_file_name(fileID); // gets the file name from the ID, turns into a path
   std::cout << "Pulling: " << file_path << ":" << std::endl;
   remove(file_path.c_str()); // deletes the file if it exists
   
@@ -65,7 +65,7 @@ void pull_file(tcp::socket& _socket, int fileID) {
   output_buffer[0] = '*'; // "*" is a flag used to signal "ready"
   boost::asio::write(_socket, boost::asio::buffer(output_buffer, MAX_PACKET_LENGTH)); // signal "ready to get file size"
   boost::asio::read(_socket, boost::asio::buffer(input_buffer, MAX_PACKET_LENGTH)); // read file size
-  int file_size = std::stoi(string(input_buffer)); // turn the input buffer (file size) into a string (to get rid of null characters), and from there to an integer
+  int file_size = std::stoi(std::string(input_buffer)); // turn the input buffer (file size) into a string (to get rid of null characters), and from there to an integer
 
   FILE* output_file = fopen(file_path.c_str(), "wb"); // open the destination file
   int bytes_remaining = file_size;
@@ -104,12 +104,12 @@ void pull_file(tcp::socket& _socket, int fileID) {
 // gets the file map contents
 std::vector<std::vector<std::string>> get_file_map() {
   std::vector<std::vector<std::string>> map_info;
-  std::ifstream file_map(FILE_MAP_PATH);
+  std::ifstream file_map(FILE_MAP_PATH); // opens the file_map file
 
   std::string fileID;
   std::string filename;
 
-  std::vector<std::string> entry(4, "");
+  std::vector<std::string> entry(4, ""); // initializes empty array for the entry
 
   while (file_map >> fileID) {
     file_map >> filename;
@@ -128,7 +128,7 @@ std::string get_file_name(int fileID) {
   std::vector<std::vector<std::string>> map_info = get_file_map();
 
   for (std::vector<std::string> entry : map_info) {
-    if (to_string(fileID) == entry[0]) {
+    if (std::to_string(fileID) == entry[0]) {
       return entry[1];
     }
   }

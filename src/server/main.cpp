@@ -4,7 +4,7 @@
 int main(int argc, char* argv[]) {
 
   boost::asio::io_service io_service; // create the io service
-
+  test_fun();
   // server infinite loop, try-catch to ensure it keeps running
   while(true) {
     try {

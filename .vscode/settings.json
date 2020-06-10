@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.ipp": "cpp",
+        "iostream": "cpp",
+        "string_view": "cpp",
+        "array": "cpp",
+        "bitset": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp",
+        "valarray": "cpp"
+    }
+}
