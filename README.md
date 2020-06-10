@@ -8,7 +8,7 @@ This project is still in development, so there are plenty of excess files presen
 
 Littlebox aims to be an easy-to-deploy, fast, secure file server that users can run to access files from anywhere in the world.
 
-## Current Features:
+## Current Features
 
 - Push files
 - Pull files
